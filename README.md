@@ -147,6 +147,10 @@ variable so the daemon can be driven entirely from a systemd
 | `--mqtt-topic-prefix`     | `EVMQTT_MQTT_TOPIC_PREFIX`     | `evmqtt`     |
 | `--mqtt-client-id-prefix` | `EVMQTT_MQTT_CLIENT_ID_PREFIX` | `evmqtt-rs`  |
 | `--mqtt-keepalive-secs`   | `EVMQTT_MQTT_KEEPALIVE_SECS`   | `30`         |
+| `--mqtt-max-packet-size`  | `EVMQTT_MQTT_MAX_PACKET_SIZE`  | `10240`      |
+| `--mqtt-tls`              | `EVMQTT_MQTT_TLS`              | none         |
+| `--mqtt-tls-ca`           | `EVMQTT_MQTT_TLS_CA`           | none         |
+>>>>>>> feat/tls
 
 ### Home Assistant (`EVMQTT_HASS_*`)
 
