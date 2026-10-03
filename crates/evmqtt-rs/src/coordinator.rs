@@ -357,6 +357,8 @@ mod tests {
             client_id_prefix: "test".into(),
             keepalive_secs: 30,
             max_packet_size: None,
+            tls: false,
+            tls_ca: None,
         }
     }
 

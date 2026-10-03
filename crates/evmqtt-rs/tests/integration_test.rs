@@ -233,6 +233,8 @@ impl Harness {
             client_id_prefix: client_id_prefix.into(),
             keepalive_secs: 30,
             max_packet_size: None,
+            tls: false,
+            tls_ca: None,
         }
     }
 
