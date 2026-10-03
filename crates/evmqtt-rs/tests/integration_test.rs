@@ -234,6 +234,7 @@ impl Harness {
             keepalive_secs: 30,
             tls: false,
             tls_ca: None,
+            max_packet_size: None,
         }
     }
 

@@ -55,6 +55,9 @@ pub struct Args {
     /// used.
     #[arg(long, env = "EVMQTT_MQTT_TLS_CA")]
     pub mqtt_tls_ca: Option<PathBuf>,
+    /// MQTT max packet size.
+    #[arg(long, env = "EVMQTT_MQTT_MAX_PACKET_SIZE")]
+    pub mqtt_max_packet_size: Option<usize>,
 
     // ── Home Assistant ─────────────────────────────────────────────────
     /// Publish HA discovery payloads when true.
@@ -137,6 +140,7 @@ pub struct MqttConfig {
     pub keepalive_secs: u16,
     pub tls: bool,
     pub tls_ca: Option<PathBuf>,
+    pub max_packet_size: Option<usize>,
 }
 
 #[derive(Debug, Clone)]
@@ -194,6 +198,11 @@ impl Args {
         if self.hass_discovery_prefix.trim().is_empty() {
             return Err("--hass-discovery-prefix must not be empty");
         }
+        if let Some(size) = self.mqtt_max_packet_size
+            && size == 0
+        {
+            return Err("--mqtt-max-packet-size must be non-zero");
+        }
 
         let hass_name = self
             .hass_name
@@ -216,6 +225,7 @@ impl Args {
                 keepalive_secs: self.mqtt_keepalive_secs,
                 tls: self.mqtt_tls,
                 tls_ca: self.mqtt_tls_ca,
+                max_packet_size: self.mqtt_max_packet_size,
             },
             hass: HassConfig {
                 enabled: self.hass_enabled,
@@ -289,6 +299,19 @@ mod tests {
             }
             other => panic!("expected Manage, got {other:?}"),
         }
+    }
+
+    #[test]
+    fn parses_max_packet_size() {
+        let args = parse(&[
+            "--mqtt-max-packet-size",
+            "1",
+            "--list-devices",
+            "--mqtt-host",
+            "broker",
+        ]);
+        let rt = args.into_runtime().expect("runtime");
+        assert!(matches!(rt.mqtt.max_packet_size, Some(1)));
     }
 
     #[test]
